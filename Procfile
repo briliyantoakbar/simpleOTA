@@ -1,1 +1,1 @@
-web: uvicorn simpleOTA:app --reload
+web: uvicorn simpleOTA:app --host 0.0.0.0 --port 8000 --reload
