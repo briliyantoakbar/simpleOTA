@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+      *{
+          margin: 0px 0px 0px 0px;
+          padding: 0px 0px 0px 0px;
+          
+      }
+      nav{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color:rgba(10, 192, 94,1);
+  
+  }
+  .navbar p{
+      color:#FDFDFD;
+      font-family: Poppins;
+      font-weight: bold;
+      font-size: 25px;
+  }
+  .conten{
+      display: flex;
+      width: 100%;
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+      flex-direction: column;
+  
+  }
+  .conten p{
+      text-align: center;
+      padding-top: 40px;
+      padding-bottom: 20px;
+      color: #333;
+      font-family: Poppins;
+      font-size: 27px;
+  
+  }
+  .oke{
+      padding-left: 80px;
+  }
+  .oke input{
+    color: #333;
+    text-align: center;
+      font-family: Poppins;
+  }
+  </style>
+        <title>HOME</title>
+    </head>
+    <body>
+        <nav><div class="navbar"><p>Update Firmware</p></div></nav>
+<div class="conten"><p>Upload File Firmware</p>
+        <form class="oke" action="/submitform" method="post" enctype="multipart/form-data">
+            <input type="text" name="versi">
+           
+            <input type="file" name="file"><br>
+            <br>
+            <input type="submit"><br>
+        </form>
+   
+</div>
+<div class="foto"></div>
+</body>
+    
+   
+</html>
