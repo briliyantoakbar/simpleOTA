@@ -84,10 +84,8 @@ def catd(versi: str):
     #     os.remove(temp_file_path)
     return response
     
-@app.get("/p/")  #Alamat link untuk request version
-def index():
-    global versi2
-    versi=versi2
-    print(versi2)
-    return {"version": versi,"url":"https://slope-character-refined-transcription.trycloudflare.com/cat/5"}
+@app.get("/p/{versiw}")  #Alamat link untuk request version
+def index(versiw):
+    url="https://fastapiskripsi-be199a487d88.herokuapp.com/c/"+versw
+    return {"version": versiw,"url":url}
 
