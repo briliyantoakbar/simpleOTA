@@ -102,7 +102,7 @@ async def root2(item: Item):
     print(list_names)
     conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
     cursor=conn.cursor()
-    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0]))
+    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0],))
     c=False
     for row in cursor:
         c=True
@@ -129,7 +129,7 @@ async def root(item: Item):
     for nm in item.name:
         list_names.append(nm)
     print(list_names)
-    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0]))
+    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0],))
     for row in cursor:
         print("HAIII")
         print(row[1])
