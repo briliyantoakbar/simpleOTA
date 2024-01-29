@@ -2,6 +2,9 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 import sqlite3
 import aiosqlite
 import asyncio
+import base64
+import io
+import uuid
 from fastapi import Body, FastAPI,UploadFile, File, Request, Form
 from fastapi.responses import FileResponse
 from secrets import token_hex
@@ -37,23 +40,49 @@ async def index2(versi:int=Form(...),file:UploadFile=File(...)):
     conn.commit()
     return {"aku":"oke"}
 
-@app.get("/cat/{versi}") #Alamat link untuk mendownload file
-def catd(versi):
-    global data
-    global datas
-    conn=sqlite3.connect("databaseOTA.db",check_same_thread=False)
-    cursor=conn.cursor()
-    cursor.execute("SELECT id,versi, name,data from ota WHERE versi = ?", (str(versi)))
-    for row in cursor:
-        c=True
-        print("HAIII")
-        print(row[0])
-        print(row[1])
-        print(row[2])
-        data=row[1]
-        datas=row[2]
-    # return {"data":"oke"}
-        return FileResponse(path=datas, media_type="text",filename=data)
+# @app.get("/cat/{versi}") #Alamat link untuk mendownload file
+# def catd(versi):
+#     global data
+#     global datas
+#     conn=sqlite3.connect("databaseOTA.db",check_same_thread=False)
+#     cursor=conn.cursor()
+#     cursor.execute("SELECT id,versi, name,data from ota WHERE versi = ?", (str(versi)))
+#     for row in cursor:
+#         c=True
+#         print("HAIII")
+#         print(row[0])
+#         print(row[1])
+#         print(row[2])
+#         data=row[1]
+#         datas=row[2]
+#     # return {"data":"oke"}
+#         return FileResponse(path=datas, media_type="text",filename=data)
+
+@app.get("/c/{versi}")  # Alamat link untuk mendownload file
+def catd(versi: str):
+    conn = sqlite3.connect("databaseOTA.db", check_same_thread=False)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT data FROM ota WHERE versi = ?", (versi,))
+    row = cursor.fetchone()
+    conn.close()
+
+    if row is None:
+        raise HTTPException(status_code=404, detail="Version not found")
+
+    image_data = row[0]
+
+    temp_file_path = f"temp_{uuid.uuid4()}.jpg"  # Change extension based on actual image type
+    with open(temp_file_path, "wb") as file:
+        file.write(image_data)
+
+    response = FileResponse(temp_file_path, media_type='text')
+
+    # Cleanup temporary file after response
+    # @response.background
+    # def cleanup():
+    #     os.remove(temp_file_path)
+    return response
     
 @app.get("/p/")  #Alamat link untuk request version
 def index():
@@ -61,3 +90,4 @@ def index():
     versi=versi2
     print(versi2)
     return {"version": versi,"url":"https://slope-character-refined-transcription.trycloudflare.com/cat/5"}
+
