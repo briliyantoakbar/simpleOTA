@@ -86,6 +86,6 @@ def catd(versi: str):
     
 @app.get("/p/{versiw}")  #Alamat link untuk request version
 def index(versiw):
-    url="https://fastapiskripsi-be199a487d88.herokuapp.com/c/"+versw
+    url="https://fastapiskripsi-be199a487d88.herokuapp.com/c/"+versiw
     return {"version": versiw,"url":url}
 
