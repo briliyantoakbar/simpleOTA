@@ -99,9 +99,10 @@ async def root2(item: Item):
     list_names = []
     for nm in item.name:
         list_names.append(nm)
-    print(list_names)
+    print(list_names[0])
     conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
     cursor=conn.cursor()
+    data=list_names[0]
     cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0],))
     c=False
     for row in cursor:
@@ -118,6 +119,7 @@ async def root2(item: Item):
         cursor.execute("INSERT INTO data VALUES (?,?,?)",(None,list_names[0],list_names[1]))
         conn.commit()
     return {"DATA":"OKE"}
+
 
 @app.post("/getversi")
 async def root(item: Item):
