@@ -24,6 +24,10 @@ cursor=conn.cursor()
 # Run the table creation at startup
 templates=Jinja2Templates(directory="htmldirectory")
 
+class Item(BaseModel):
+    name:list
+
+
 @app.get("/home/", response_class=HTMLResponse)  #Alamat link untuk memasukki menu home
 def home(request: Request):
     return templates.TemplateResponse("index.html",{"request":request}) #menampilkan halaman HTML
@@ -88,4 +92,44 @@ def catd(versi: str):
 def index(versiw):
     url="https://fastapiskripsi-be199a487d88.herokuapp.com/c/"+versiw
     return {"version": versiw,"url":url}
+
+
+@app.get("/edit/{uuid}/v/{versi}") #alamat untuk upload uuid dan versi oleh arduino
+async def root2(uuid,versi):
+    conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
+    cursor=conn.cursor()
+    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (uuid))
+    c=False
+    for row in cursor:
+        c=True
+        print("HAIII")
+        print(row[1])
+        print(row[2])
+        cursor.execute("UPDATE data SET versi=? WHERE uuid=?", (versi, row[1]))
+        conn.commit()
+    if(c==False):
+        print("HAIIIr")
+        conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
+        cursor=conn.cursor()
+        cursor.execute("INSERT INTO data VALUES (?,?,?)",(None,uuid,versi))
+        conn.commit()
+    return {"DATA":"OKE"}
+
+@app.post("/getversi")
+async def root(item: Item):
+    conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
+    cursor=conn.cursor()
+    list_names = []
+    ver=[]
+    ver.clear
+    for nm in item.name:
+        list_names.append(nm)
+    print(list_names)
+    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0]))
+    for row in cursor:
+        print("HAIII")
+        print(row[1])
+        print(row[2])
+        ver.append(row[2])
+    return {"aku":ver}
 
