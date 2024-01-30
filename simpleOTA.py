@@ -121,6 +121,24 @@ async def root2(item: Item):
     return {"DATA":"OKE"}
 
 
+# @app.post("/getversi")
+# async def root(item: Item):
+#     conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
+#     cursor=conn.cursor()
+#     list_names = []
+#     ver=[]
+#     ver.clear
+#     for nm in item.name:
+#         list_names.append(nm)
+#     print(list_names)
+#     cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0],))
+#     for row in cursor:
+#         print("HAIII")
+#         print(row[1])
+#         print(row[2])
+#         ver.append(row[2])
+#     return {"aku":ver}
+
 @app.post("/getversi")
 async def root(item: Item):
     conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
@@ -131,11 +149,13 @@ async def root(item: Item):
     for nm in item.name:
         list_names.append(nm)
     print(list_names)
-    cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (list_names[0],))
-    for row in cursor:
-        print("HAIII")
-        print(row[1])
-        print(row[2])
-        ver.append(row[2])
+    for x in list_names:
+        print(x)
+        cursor.execute("SELECT id, uuid, versi from data WHERE uuid=?", (x,))
+        for row in cursor:
+            print("HAIII")
+            print(row[1])
+            print(row[2])
+            ver.append(row[2])
     return {"aku":ver}
 
