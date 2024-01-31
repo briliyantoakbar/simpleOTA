@@ -159,3 +159,18 @@ async def root(item: Item):
             ver.append(row[2])
     return {"aku":ver}
 
+
+@app.post("/getallversi") #menampilkan seluruh versi program
+def tampil_keluaran(payload: dict=Body(...)):
+    lis=[]
+    conn=sqlite3.connect("databaseOTA.db",check_same_thread=False)
+    cursor=conn.cursor()
+    getkontak=payload['name']
+    if(getkontak=="cekdata"):
+        data=conn.execute('SELECT versi FROM ota')
+        for i in data:
+            print(i)
+            lis.append(i[0])
+        print(lis)
+    return {"data":lis}
+
