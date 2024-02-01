@@ -127,7 +127,6 @@ async def root9(item: Item):
     cursor=conn.cursor()
     list_names = []
     versi=""
-    ver.clear
     for nm in item.name:
         list_names.append(nm)
     print(list_names)
