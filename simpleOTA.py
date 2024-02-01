@@ -144,7 +144,7 @@ async def root(item: Item):
     conn=sqlite3.connect("Uuiduser.db",check_same_thread=False)
     cursor=conn.cursor()
     list_names = []
-    ver=[]
+    versi=""
     ver.clear
     for nm in item.name:
         list_names.append(nm)
@@ -156,8 +156,8 @@ async def root(item: Item):
             print("HAIII")
             print(row[1])
             print(row[2])
-            ver.append(row[2])
-    return {"aku":ver}
+            versi=row[2]
+    return {"aku":versi}
 
 
 @app.post("/getallversi") #menampilkan seluruh versi program
