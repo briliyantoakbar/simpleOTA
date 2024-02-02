@@ -173,3 +173,70 @@ def tampil_keluaran(payload: dict=Body(...)):
         print(lis)
     return {"data":lis}
 
+
+@app.post("/getperintah")
+async def root21(item: Item):
+    conn=sqlite3.connect("datasmart.db",check_same_thread=False)
+    cursor=conn.cursor()
+    id1="0"
+    id2="0"
+    id3="0"
+    id4="0"
+    id5="0"
+    id6="0"
+    list_names = []
+    for nm in item.name:
+        list_names.append(nm)
+    print(list_names)
+    cursor.execute("SELECT id, uuiddevice, nama, uuid, relay, kondisi from Breaker WHERE uuiddevice = ?", (list_names[0],))
+    for row in cursor:
+        print("HAIII")
+        print(row[0])
+        print(row[1])
+        print(row[2])
+        if(row[4]=="ID-1"):
+            id1=row[5]
+        if(row[4]=="ID-2"):
+            id2=row[5]
+        if(row[4]=="ID-3"):
+            id3=row[5]
+        if(row[4]=="ID-4"):
+            id4=row[5]
+        if(row[4]=="ID-5"):
+            id5=row[5]
+        if(row[4]=="ID-6"):
+            id6=row[5]          
+    conn.commit() 
+    return {"id1":id1,"id2":id2,"id3":id3,"id4":id4,"id5":id5,"id6":id6}
+
+@app.post("/postperintah")
+async def root12(item: Item):
+    conn=sqlite3.connect("datasmart.db",check_same_thread=False)
+    cursor=conn.cursor()
+    list_names = []
+    for nm in item.name:
+        list_names.append(nm)
+    print(list_names)
+    cursor.execute("SELECT id, uuiddevice, nama, uuid, relay, kondisi from Breaker WHERE uuiddevice = ? AND uuid=?", (list_names[0],list_names[2]))
+    c=False
+    for row in cursor:
+        c=True
+        print("HAIII")
+        print(row[0])
+        print(row[1])
+        print(row[2])
+        new_kondisi=row[3]
+        cursor.execute("UPDATE Breaker SET kondisi=? WHERE uuid=?", (list_names[4],list_names[2]))
+        conn.commit()
+    if(c==False):
+        print("HAIIIr")
+        conn=sqlite3.connect("datasmart.db",check_same_thread=False)
+        cursor=conn.cursor()
+        list_names = []
+        for nm in item.name:
+            list_names.append(nm)
+        print(list_names)
+        cursor.execute("INSERT INTO Breaker VALUES (?,?,?,?,?,?)",(None,list_names[0],list_names[1],list_names[2],list_names[3],list_names[4]))
+        conn.commit()
+    return{"oke":"mantap"}
+
